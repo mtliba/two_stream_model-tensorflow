@@ -78,8 +78,8 @@ def train_data( data_dir = 'project/data/' , image_dir = 'images', label_dir = '
     image_data, rescaled_image_data, label_data = import_train_data(data_dir, image_dir, label_dir , use_cache=False)
     
     # specify percent of validaton set
-    if float(val_prc) == 0.0 :
-        num_val = int(math.floor(len(image_data)*0.1))
+    if float(val_prc) != 0.0 :
+        num_val = int(math.floor(len(image_data)*val_prc))
         val_index = np.random.choice(len(image_data), num_val, replace=False)
         train_index = np.setdiff1d(range(len(image_data)), val_index)
 
