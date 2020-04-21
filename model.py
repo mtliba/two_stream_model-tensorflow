@@ -125,7 +125,7 @@ class Two_stream_Model():
     def build_Two_stream_Model(self):
         #create two streams separately
 
-        normal_stream_input, normal_stream_output = self.build_vgg16(input_shape=(600, 800, 3), stream_type='normal')
+        normal_stream_input, normal_stream_output = self.build_vgg16(input_shape=(400, 800, 3), stream_type='normal')
         scaled_stream_input , scaled_stream_output = self.build_vgg16(input_shape=(300, 400, 3), stream_type='rescaled')
 
         #add interpolation layer to the rescaled stream
@@ -141,12 +141,13 @@ class Two_stream_Model():
         # change this layer to autoencuder bottelneck !!!!!!! lacke of data  leverage mean and dts in sampling 
         reshape_conv = layers.Conv2D(512, (1, 1),
                         activation='relu',
+                        padding="same",
                         name='reshape_conv')(concat_layer)
         x = layers.Conv2DTranspose(
               512,
               kernel_size=3,
               strides=(1, 1),
-              padding="SAME",
+              padding="same",
               activation='relu',
              )(reshape_conv)                        
 
@@ -154,14 +155,14 @@ class Two_stream_Model():
               512,
               kernel_size=3,
               strides=(1, 1),
-              padding="SAME",
+              padding="same",
               activation='relu')(x)
 
         x = layers.Conv2DTranspose(
               512,
               kernel_size=3,
               strides=(1, 1),
-              padding="SAME",
+              padding="same",
               activation='relu')(x)
         
         x = layers.UpSampling2D(size=(2, 2), interpolation='nearest')(x)      
@@ -169,21 +170,21 @@ class Two_stream_Model():
         x = layers.Conv2DTranspose(
               256,
               kernel_size=3,
-              strides=(2, 2),
-              padding="SAME",
+              strides=(1, 1),
+              padding="same",
               activation='relu')(x)
 
         x = layers.Conv2DTranspose(
               256,
               kernel_size=3,
-              strides=(2, 2),
-              padding="SAME",
+              strides=(1, 1),
+              padding="same",
               activation='relu')(x)
         x = layers.Conv2DTranspose(
               256,
               kernel_size=3,
-              strides=(2, 2),
-              padding="SAME",
+              strides=(1, 1),
+              padding="same",
               activation='relu')(x)
 
         x = layers.UpSampling2D(size=(2, 2), interpolation='nearest')(x)
@@ -191,14 +192,14 @@ class Two_stream_Model():
         x = layers.Conv2DTranspose(
               128,
               kernel_size=3,
-              strides=(2, 2),
-              padding="SAME",
+              strides=(1, 1),
+              padding="same",
               activation='relu')(x)
         x = layers.Conv2DTranspose(
               128,
               kernel_size=3,
-              strides=(2, 2),
-              padding="SAME",
+              strides=(1, 1),
+              padding="same",
               activation='relu')(x) 
 
         x = layers.UpSampling2D(size=(2, 2), interpolation='nearest')(x)
@@ -206,23 +207,22 @@ class Two_stream_Model():
         x = layers.Conv2DTranspose(
               64,
               kernel_size=3,
-              strides=(2, 2),
-              padding="SAME",
+              strides=(1, 1),
+              padding="same",
               activation='relu')(x)
         x = layers.Conv2DTranspose(
               64,
               kernel_size=3,
-              strides=(2, 2),
-              padding="SAME",
+              strides=(1, 1),
+              padding="same",
               activation='relu')(x) 
 
-        x = layers.UpSampling2D(size=(4, 4), interpolation='nearest')(x)
+        x = layers.UpSampling2D(size=(2, 2), interpolation='nearest')(x)
 
         map_layer = layers.Conv2DTranspose(
               1,
               kernel_size=1,
-              strides=(1, 1),
-              padding="SAME",
+              strides=(2, 2),
               activation='segmoid')(x)
 
 
