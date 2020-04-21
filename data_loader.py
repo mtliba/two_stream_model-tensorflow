@@ -7,7 +7,7 @@ from random import shuffle
 import math
 
 
-def import_train_data(dataset_root, image_dir, labels_dir ,input_size = (800,600) , use_cache=True):
+def import_train_data(dataset_root, image_dir, labels_dir ,input_size = (600,800) , use_cache=True):
 
     if use_cache:
         cache_dir = join(dataset_root, '__cache')
@@ -55,7 +55,7 @@ def import_train_data(dataset_root, image_dir, labels_dir ,input_size = (800,600
 
 
 
-def train_data( data_dir = 'project/data/' , image_dir = 'images', label_dir = 'annotated_images' , val_prc = 0.1 , dataset_mean ,dataset_mean ):
+def train_data( data_dir = 'project/data/' , image_dir = 'images', label_dir = 'annotated_images' , val_prc = 0.1 , dataset_mean  ):
    
     #assuming that the dataset structure is as follows
     #dataset_root
@@ -75,7 +75,7 @@ def train_data( data_dir = 'project/data/' , image_dir = 'images', label_dir = '
     # for train time we do not leverage this option
     # image data intended to feed into normal stream , rescaled image intended to fedd into rescaled stream
 
-    image_data, rescaled_image_data, label_data = import_train_data(data_dir, image_dir, label_dir, input_size, use_cache=False)
+    image_data, rescaled_image_data, label_data = import_train_data(data_dir, image_dir, label_dir , use_cache=False)
     
     # specify percent of validaton set
     if float(val_prc) == 0.0 :
@@ -92,4 +92,5 @@ def train_data( data_dir = 'project/data/' , image_dir = 'images', label_dir = '
         return X_train, Y_train, X_val, Y_val      
 
     return [image_data, rescaled_image_data], label_data
+
 
